@@ -18,13 +18,8 @@ export async function connectDB() {
 }
 
 /*****
-Este archivo es la puerta de entrada a la base de datos
-
+Este archivo es la puerta de entrada a la base de datos,
 Se usa desde: app.mjs → connectDB()
 
-Sin esto:
-❌ No hay modelos
-❌ No hay consultas
-❌ No hay API
-
+Sin esto, no hay modelos, no hay consultas, no hay API
 ******/
