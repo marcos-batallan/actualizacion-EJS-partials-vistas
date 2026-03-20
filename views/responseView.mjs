@@ -1,3 +1,4 @@
+
 export function renderizarSuperheroe (superheroe) {
     return {
         // Aquí agrego el Id (no incluido en el TP original) para que se muestre cuando el cliente
@@ -16,5 +17,12 @@ export function renderizarSuperheroe (superheroe) {
 }
 
 export function renderizarListaSuperheroes (superheroes) {
+    // Se recorre un array y tranforma cada elemento
     return superheroes.map(superheroe => renderizarSuperheroe(superheroe));
 }
+
+
+/*****
+Este archivo se encarga de transformar los datos crudos de la base y convertirlos 
+en respuestas formateadas para el cliente, desacoplando la estructura interna de la API.
+*****/
