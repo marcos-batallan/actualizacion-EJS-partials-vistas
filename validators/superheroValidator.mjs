@@ -133,7 +133,7 @@ export const actualizarParcialSuperheroeValidations = [
 // Función para validar por Nombre en el método DELETE
 export const eliminarSuperheroePorNombreValidations = [
 
-    param(nombre)
+    param("nombre")
         .trim()
         .isLength({ min: 3, max: 60 })
         .withMessage("El nombre debe tener entre 3 y 60 caracteres")
@@ -143,7 +143,7 @@ export const eliminarSuperheroePorNombreValidations = [
 // Función para validar por ID en el método DELETE
 export const eliminarSuperheroePorIdValidations = [
 
-    param(id)
+    param("id")
         .isMongoId()
         .withMessage("El ID debe ser válido")
 ];
