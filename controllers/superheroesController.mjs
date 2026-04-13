@@ -18,13 +18,18 @@ export async function obtenerSuperheroePorIdController (req, res) {
         const { id } = req.params; // Leer el parámetro de ruta => GET /heroes/:id
         const superheroe = await obtenerSuperheroePorId(id); // Llama a la fn del service
         if (!superheroe) { // Se valida la existencia del parámetro
-            return res.status(404).send({ mensaje: 'Superhéroe no encontrado' }); //404 si no existe
+            return res.status(404).send({
+                mensaje: "Superhéroe no encontrado" //error 404 (no encontrado) si no existe
+            });
         }
 
         const superheroeFormateado = renderizarSuperheroe(superheroe); // Se da formato a la respuesta
         res.status(200).json(superheroeFormateado); // Se envía la respuesta
-    } catch (error) { // Mensaje de error del servidor
-        res.status(500).send({ mensaje: 'Error al obtener el Superhéroe', error: error.message });
+    } catch (error) {
+        res.status(500).send({
+            mensaje: "Error al obtener el Superhéroe",
+            error: error.message //error 500 error del servidor
+        });
     }
 }
 
@@ -37,7 +42,10 @@ export async function obtenerTodosLosSuperheroesController (req, res) {
         const superheroesFormateados = renderizarListaSuperheroes(superheroes); // Se da formato a la respuesta
         res.status(200).json(superheroesFormateados); // Devuelve respuesta en JSON
     } catch (error) { // Mensaje de error del servidor
-        res.status(500).send({ mensaje: 'Error al obtener los Superhéroes', error: error.message })
+        res.status(500).send({
+            mensaje: "Error al obtener los Superhéroes",
+            error: error.message //error 500 error del servidor
+        });
     }
 }
 
@@ -48,13 +56,18 @@ export async function buscarSuperheroePorAtributoController (req, res) {
         const { atributo, valor } = req.params; // Leer parámetros dinámicos => GET heroes/buscar/planetaOrigen/Tierra
         const superheroes = await buscarSuperheroePorAtributo (atributo, valor); // Llama a la fn del service
         if (superheroes.length === 0) { // Se validan los datos
-            return res.status(404).send({ mensaje: 'No se encontraron Superhéroes con ese atributo' }); //404 si no existe
+            return res.status(404).send({
+                mensaje: "No se encontraron Superhéroes con ese atributo"
+            });
         }
 
         const superheroesFormateados = renderizarListaSuperheroes(superheroes); // Se da formato a la respuesta
         res.status(200).json(superheroesFormateados); // Devuelve respuesta en JSON
     } catch (error) { // Mensaje de error del servidor
-        res.status(500).send({ mensaje: 'Error al buscar los Superhéroes', error: error.message });
+        res.status(500).send({
+            mensaje: "Error al buscar los Superhéroes",
+            error: error.message
+        });
     }
 }
 
@@ -64,13 +77,18 @@ export async function obtenerSuperheroesMayoresDe30Controller (req, res) {
     try {
         const superheroes = await obtenerSuperheroesMayoresDe30 (); // Llama a la fn del service
         if (superheroes.length === 0) { // Se validan los datos
-            return res.status(404).send({ mensaje: 'No se encontraron Superhéroes mayores de 30 años' }); //404 si no existe
+            return res.status(404).send({
+                mensaje: "No se encontraron Superhéroes mayores de 30 años"
+            }); //404 si no existe
         }
 
         const superheroesFormateados = renderizarListaSuperheroes(superheroes); // Se da formato a la respuesta
         res.status(200).json(superheroesFormateados); // Devuelve respuesta en JSON
     } catch (error) { // Mensaje de error del servidor
-        res.status(500).send({ mensaje: 'Error al obtener Superhéroes mayores de 30 años', error: error.message });
+        res.status(500).send({
+            mensaje: "Error al obtener Superhéroes mayores de 30 años",
+            error: error.message
+        });
     }
 }
 
@@ -85,7 +103,10 @@ export async function crearSuperheroeController (req, res) {
         const nuevoHeroe = await crearSuperheroe (datos); // Llama a la fn del service
         res.status(201).json(nuevoHeroe); // Devuelve la respuesta - creación correcta
     } catch (error) {
-        res.status(500).json({ mensaje: 'Error al crear nuevo Superhéroe', error: error.message });
+        res.status(400).json({ 
+            mensaje: "Error de validación", 
+            error: error.message
+        });
     }
 }
 
@@ -99,11 +120,16 @@ export async function actualizarSuperheroeController (req, res) {
         const heroeActualizado = await actualizarSuperheroe (id, datos); // Llama a la fn del service
 
         if (!heroeActualizado) {
-            return res.status(404).json({ mensaje: 'Superhéroe no encontrado'});
+            return res.status(404).json({
+                mensaje: "Superhéroe no encontrado"
+            });
         }
         res.status(200).json(heroeActualizado);
     } catch (error) {
-        res.status(500).json({ mensaje: 'Error al actualizar los datos', error: error.message });
+        res.status(400).json({
+            mensaje: "Error de validación",
+            error: error.message
+        });
     }
 }
 
@@ -117,11 +143,16 @@ export async function actualizarParcialSuperheroeController (req, res) {
         const heroeActualizadoParcial = await actualizarParcialSuperheroe (id, datos);
 
         if (!heroeActualizadoParcial) {
-            return res.status(404).json({ mensaje: 'Superhéroe no encontrado' });
+            return res.status(404).json({
+                mensaje: "Superhéroe no encontrado"
+            });
         }
         res.status(200).json(heroeActualizadoParcial);
     } catch (error) {
-        res.status(500).json({ mensaje: 'Error al actualizar parcialmente los datos', error: error.message});
+        res.status(400).json({
+            mensaje: "Error de validación",
+            error: error.message
+        });
     }
 }
 
@@ -134,11 +165,19 @@ export async function eliminarSuperheroePorNombreController (req, res) {
         const eliminado = await eliminarSuperheroePorNombre (nombre);
 
         if (!eliminado) {
-            return res.status(404).json({ mensaje: 'Superhéroe no encontrado' });
+            return res.status(404).json({
+                mensaje: "Superhéroe no encontrado"
+            });
         }
-        res.status(200).json({ mensaje: 'Superhéroe eliminado correctamente', eliminado });
+        res.status(200).json({
+            mensaje: "Superhéroe eliminado correctamente",
+            eliminado
+        });
     } catch (error) {
-        return res.status(500).json({ mensaje: 'Error al eliminar Superhéroe', error: error.message});
+        return res.status(500).json({
+            mensaje: "Error al eliminar Superhéroe",
+            error: error.message
+        });
     }
 }
 
@@ -151,11 +190,19 @@ export async function eliminarSuperheroeporIdController (req, res) {
         const heroeEliminado = await eliminarSuperheroePorId (id);
 
         if (!heroeEliminado) {
-            return res.status(404).json({ mensaje: 'Superhéroe no encontrado'});
+            return res.status(404).json({
+                mensaje: "Superhéroe no encontrado"
+            });
         }
-        res.status(200).json({ mensaje: 'Superhéroe eliminado', heroeEliminado});
+        res.status(200).json({
+            mensaje: "Superhéroe eliminado",
+            heroeEliminado
+        });
     } catch (error) {
-        return res.status(500).json({ mensaje: 'Error al eliminar Superhéroe', error: error.message });
+        return res.status(500).json({
+            mensaje: "Error al eliminar Superhéroe",
+            error: error.message
+        });
     }
 }
 

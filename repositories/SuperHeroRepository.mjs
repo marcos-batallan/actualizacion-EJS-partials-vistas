@@ -30,15 +30,23 @@ SOLICITADOS PARA EL TP1 DEL SPRINT 3 *****/
 
     async crear (datos) {
         const nuevo = new SuperHero (datos); // Se crea una nueva instancia
-        return await nuevo.save(); // Se guarda el nuevo objeto en la DB
+        return await nuevo.save(); // Se guarda el nuevo objeto en la DB con la validación correspondiente
     }
 
     async actualizar (id, datos) {
-        return await SuperHero.findOneAndReplace({ _id: id }, datos, { returnDocument: 'after' });
+        return await SuperHero.findOneAndReplace(
+            { _id: id },
+            datos,
+            { returnDocument: 'after', runValidators: true }
+        );
     }
 
     async actualizarParcial (id, datos) {
-        return await SuperHero.findByIdAndUpdate( id, datos, { returnDocument: 'after' });
+        return await SuperHero.findByIdAndUpdate(
+            id,
+            datos,
+            { returnDocument: 'after', runValidators: true }
+        );
     }
 
     async eliminarPorNombre (nombre) {
