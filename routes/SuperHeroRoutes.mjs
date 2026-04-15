@@ -29,6 +29,9 @@ import {
 // Se importa la función de validación del middleware
 import { validarCampos } from '../middlewares/validationMiddleware.mjs';
 
+// Se importa la función para el filtro de campos inválidos
+//import { filtrarCamposPermitidos } from '../middlewares/camposPermitidosMiddleware.mjs';
+
 // Se crea en servidor de rutas para agrupar los endpoints, modularizar y mantener limpio el app.mjs
 const router = express.Router();
 
@@ -65,6 +68,17 @@ SOLICITADOS PARA EL TP1 DEL SPRINT 3 *****/
 // Crear nuevo Superhéroe en la colección (método POST)
 router.post (
     '/heroes',
+    /*filtrarCamposPermitidos ([
+        "nombreSuperHeroe",
+        "nombreReal",
+        "edad",
+        "planetaOrigen",
+        "debilidad",
+        "poderes",
+        "aliados",
+        "enemigos",
+        "creator"
+    ]),*/
     crearSuperheroeValidations,
     validarCampos,
     crearSuperheroeController
@@ -73,6 +87,17 @@ router.post (
 // Actualización completa de Superhéroe en la DB (método PUT)
 router.put (
     "/heroes/:id",
+    /*filtrarCamposPermitidos ([
+        "nombreSuperHeroe",
+        "nombreReal",
+        "edad",
+        "planetaOrigen",
+        "debilidad",
+        "poderes",
+        "aliados",
+        "enemigos",
+        "creator"
+    ]),*/
     actualizarSuperheroeValidations,
     validarCampos,
     actualizarSuperheroeController
@@ -81,6 +106,17 @@ router.put (
 // Actualización parcial de Superhéroe (método PATCH)
 router.patch(
     "/heroes/:id",
+    /*filtrarCamposPermitidos ([
+        "nombreSuperHeroe",
+        "nombreReal",
+        "edad",
+        "planetaOrigen",
+        "debilidad",
+        "poderes",
+        "aliados",
+        "enemigos",
+        "creator"
+    ]),*/
     actualizarParcialSuperheroeValidations,
     validarCampos,
     actualizarParcialSuperheroeController

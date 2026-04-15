@@ -44,8 +44,10 @@ export const crearSuperheroeValidations = [
 
     body("edad")
         .notEmpty().withMessage("La edad es obligatoria")
+        .bail()
         .isNumeric().withMessage("Debe ser un número")
-        .custom(value => value >= 0).withMessage("No puede ser negativa"),
+        .bail()
+        .isInt({ min: 0 }).withMessage("Debe ser un número entero mayor a 0"),
 
     body("poderes")
         .isArray({ min: 1 }).withMessage("Debe ser un array con al menos un poder"),
@@ -67,18 +69,22 @@ export const actualizarSuperheroeValidations = [
     body('nombreSuperHeroe')
         .trim()
         .notEmpty().withMessage("El nombre del Superhéroe es obligatorio")
+        .bail()
         .isLength({ min: 3, max: 60 }).withMessage("Debe tener entre 3 y 60 caracteres"),
 
     // nombreReal
     body("nombreReal")
         .trim()
         .notEmpty().withMessage("El nombre real es obligatorio")
+        .bail()
         .isLength({ min: 3, max: 60 }),
 
     // edad
     body("edad")
         .notEmpty().withMessage("La edad es obligatoria")
+        .bail()
         .isNumeric().withMessage("Debe ser un número")
+        .bail()
         .custom(value => value >= 0).withMessage("No puede ser negativa"),
 
     // poderes
@@ -96,7 +102,8 @@ export const actualizarParcialSuperheroeValidations = [
     
     // Validar ID
     param("id")
-        .isMongoId().withMessage("ID inválido"),
+        .isMongoId().withMessage("ID inválido")
+        .bail(),
 
     // nombreSuperHeroe
     body('nombreSuperHeroe')
@@ -115,6 +122,7 @@ export const actualizarParcialSuperheroeValidations = [
     body("edad")
         .optional()
         .isNumeric().withMessage("Debe ser un número")
+        .bail()
         .custom(value => value >= 0).withMessage("No puede ser negativa"),
 
     // poderes
@@ -135,6 +143,8 @@ export const eliminarSuperheroePorNombreValidations = [
 
     param("nombre")
         .trim()
+        .notEmpty().withMessage("El nombre es obligatorio")
+        .bail()
         .isLength({ min: 3, max: 60 })
         .withMessage("El nombre debe tener entre 3 y 60 caracteres")
 ];
@@ -147,3 +157,9 @@ export const eliminarSuperheroePorIdValidations = [
         .isMongoId()
         .withMessage("El ID debe ser válido")
 ];
+
+
+/***** 
+Este archivo se encarga de definir las reglas que deben cumplir los datos que llegan a la API,
+controla y verifica que el formato y el contenifo que envía el cliente sea válido antes de procesarlo. 
+*****/
