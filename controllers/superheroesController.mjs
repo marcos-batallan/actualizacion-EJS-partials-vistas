@@ -34,13 +34,28 @@ export async function obtenerSuperheroePorIdController (req, res) {
 }
 
 
-// Función obtener todos los Superhéroes existentes en la DB
-export async function obtenerTodosLosSuperheroesController (req, res) {
+// Función obtener todos los Superhéroes existentes en la DB - CONTROLLER API
+export async function obtenerTodosLosSuperheroesAPIController(req, res) {
     try {
         const superheroes = await obtenerTodosLosSuperheroes(); // Llama a la fn del service
         
         const superheroesFormateados = renderizarListaSuperheroes(superheroes); // Se da formato a la respuesta
         res.status(200).json(superheroesFormateados); // Devuelve respuesta en JSON
+    } catch (error) { // Mensaje de error del servidor
+        res.status(500).send({
+            mensaje: "Error al obtener los Superhéroes",
+            error: error.message //error 500 error del servidor
+        });
+    }
+}
+
+// Función para mostrar todos los Superhéroes de la DB - CONTROLLER EJS
+export async function obtenerSuperheroesDashboardController (req, res) {
+    try {
+        const superheroes = await obtenerTodosLosSuperheroes(); // Llama a la fn del service
+        
+        res.render("dashboard", { superheroes }); // Renderiza la vista y pasa los datos
+
     } catch (error) { // Mensaje de error del servidor
         res.status(500).send({
             mensaje: "Error al obtener los Superhéroes",

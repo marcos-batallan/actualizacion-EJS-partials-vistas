@@ -13,6 +13,9 @@ import { connectDB } from './config/dbConfig.mjs';
 // Se importan los endpoints relacionados a los superhéroes
 import SuperHeroRoutes from './routes/SuperHeroRoutes.mjs';
 
+// Se importa el controlador para la vista EJS
+import { obtenerSuperheroesDashboardController } from './controllers/superheroesController.mjs';
+
 // Aquí se crea el servidor listo para configurarse
 const app = express();
 
@@ -34,6 +37,14 @@ app.use (express.json());
 // Configuración de rutas (todas las rutas bajo el prefijo /api)
 app.use ('/api', SuperHeroRoutes);
 
+//
+app.get("/heroes", obtenerSuperheroesDashboardController);
+
+// Configuración de ruta para Check de configuración de EJS
+app.get("/test", (req, res) => {
+    res.render("dashboardTest");
+});
+
 // Manejo de errores para rutas no encontradas
 app.use ((req, res) => {
     res.status(404).send({ mensaje: "Ruta no encontrada" });
@@ -50,9 +61,7 @@ connectDB()
         console.error("Error conectando a la DB:", error);
     });
 
-app.get("/test", (req, res) => {
-    res.render("dashboard");
-});
+
 
 
 /*****

@@ -4,7 +4,7 @@ import express from 'express';
 // Se importan las funciones del controlador, cada una de ellas maneja una HTTP específica
 import { 
     obtenerSuperheroePorIdController, 
-    obtenerTodosLosSuperheroesController, 
+    obtenerTodosLosSuperheroesAPIController, 
     buscarSuperheroePorAtributoController, 
     obtenerSuperheroesMayoresDe30Controller,
     crearSuperheroeController,
@@ -51,7 +51,7 @@ router.get (
 // Obtener toda la colección de Superhéroes
 router.get (
     '/heroes',
-    obtenerTodosLosSuperheroesController
+    obtenerTodosLosSuperheroesAPIController
 );
 
 // Obtener Superhéroe por ID (parámetro dinámico)

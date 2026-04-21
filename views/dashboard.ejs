@@ -1,2 +1,12 @@
 
-<h1>Dashboard funcionando 🚀</h1>
+<h2>Lista de Superhéroes 🦸‍♂️</h2>
+
+<ul>
+    <% superheroes.forEach(heroe => { %>
+        <li>
+            <strong><%= heroe.nombreSuperHeroe %></strong>
+            - <%= heroe.nombreReal %>
+            - Edad: <%= heroe.edad %>
+        </li>
+    <% }) %>
+</ul>
