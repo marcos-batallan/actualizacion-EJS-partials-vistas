@@ -34,6 +34,9 @@ app.set("views", path.join(__dirname, "views"));
 // Middleware para convertir las requests a JSON
 app.use (express.json());
 
+ // Middleware para que Express pueda leer req.body desde formularios
+app.use(express.urlencoded({ extended: true }));
+
 // Configuración de rutas (todas las rutas bajo el prefijo /api)
 app.use ('/api', SuperHeroRoutes);
 
@@ -43,6 +46,11 @@ app.get("/heroes", obtenerSuperheroesDashboardController);
 // Configuración de ruta para Check de configuración de EJS
 app.get("/test", (req, res) => {
     res.render("dashboardTest");
+});
+
+// Configuración de ruta para agregar Superhéroe EJS
+app.get("/heroes/agregar", (req, res) => {
+    res.render("addSuperhero");
 });
 
 // Manejo de errores para rutas no encontradas
@@ -60,8 +68,6 @@ connectDB()
     .catch(error => {
         console.error("Error conectando a la DB:", error);
     });
-
-
 
 
 /*****

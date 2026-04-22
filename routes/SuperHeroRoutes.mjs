@@ -11,7 +11,8 @@ import {
     actualizarSuperheroeController,
     actualizarParcialSuperheroeController,
     eliminarSuperheroePorNombreController,
-    eliminarSuperheroeporIdController
+    eliminarSuperheroeporIdController,
+    agregarSuperheroeControllerEJS
 } from '../controllers/superheroesController.mjs';
 
 // Se importa la función de validación (express-validator)
@@ -34,6 +35,13 @@ import { validarCampos } from '../middlewares/validationMiddleware.mjs';
 
 // Se crea en servidor de rutas para agrupar los endpoints, modularizar y mantener limpio el app.mjs
 const router = express.Router();
+
+// Crear nuevo Superhéroe - VISTA EJS
+router.post("/heroes/agregar",
+    crearSuperheroeValidations,
+    validarCampos,
+    agregarSuperheroeControllerEJS
+);
 
 // Obtener Superhéroes +30 (parámetro estático)
 router.get (
@@ -137,6 +145,7 @@ router.delete(
     validarCampos,
     eliminarSuperheroeporIdController
 );
+
 
 // Se exporta el router que será utilizado en app.mjs
 export default router;

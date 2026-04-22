@@ -221,6 +221,26 @@ export async function eliminarSuperheroeporIdController (req, res) {
     }
 }
 
+// Función para agregar un nuevo Superhéroe - VISTA EJS
+export async function agregarSuperheroeControllerEJS (req, res) {
+    try {
+        const datos = req.body;
+
+        // Aqui se convierten los poderes a array
+        if (typeof datos.poderes === "string") {
+            datos.poderes = datos.poderes.split(",").map(p => p.trim());
+        }
+
+        await crearSuperheroe(datos);
+
+        // Aquí se redirige al listado
+        res.redirect("/heroes");
+
+    } catch (error) {
+        res.status(500).send("Error al crear Superhéroe");
+    }
+}
+
 /*****
 Este archivo es el intermediario entre el HTTP y la lógica interna.
 Cumple la función de leer datos del request, llamar a la lógica de negocio en Services, 
