@@ -12,7 +12,8 @@ import {
     actualizarParcialSuperheroeController,
     eliminarSuperheroePorNombreController,
     eliminarSuperheroeporIdController,
-    agregarSuperheroeControllerEJS
+    agregarSuperheroeControllerEJS,
+    editarSuperheroeControllerEJS
 } from '../controllers/superheroesController.mjs';
 
 // Se importa la función de validación (express-validator)
@@ -37,10 +38,23 @@ import { validarCampos } from '../middlewares/validationMiddleware.mjs';
 const router = express.Router();
 
 // Crear nuevo Superhéroe - VISTA EJS
-router.post("/heroes/agregar",
+router.post(
+    "/heroes/agregar",
+    (req, res, next) => {
+        req.view = "addSuperhero"; // 👈 clave
+        next();
+    },
     crearSuperheroeValidations,
     validarCampos,
     agregarSuperheroeControllerEJS
+);
+
+// Editar algún Superhéroe - VISTA EJS
+router.put(
+    "/heroes/:id/editar",
+    actualizarSuperheroeValidations,
+    validarCampos,
+    editarSuperheroeControllerEJS
 );
 
 // Obtener Superhéroes +30 (parámetro estático)

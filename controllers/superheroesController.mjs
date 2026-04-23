@@ -108,9 +108,6 @@ export async function obtenerSuperheroesMayoresDe30Controller (req, res) {
 }
 
 
-/***** A PARTIR DE AQUÍ SE AGREGAN LOS METODOS POST, PUT, PATCH Y DELETE
-SOLICITADOS PARA EL TP1 DEL SPRINT 3 *****/
-
 // Función para crear nuevo Superhéroe en la colección
 export async function crearSuperheroeController (req, res) {
     try {
@@ -126,7 +123,7 @@ export async function crearSuperheroeController (req, res) {
 }
 
 
-// Función para actualizar completa de algún Superhéroe de la colección
+// Función para actualización completa de algún Superhéroe de la colección
 export async function actualizarSuperheroeController (req, res) {
     try {
         const { id } = req.params; // Requiere el atributo Id para buscar el Superhéroe a actualizar 
@@ -148,6 +145,49 @@ export async function actualizarSuperheroeController (req, res) {
     }
 }
 
+
+// Función para editar datos de un Superhéroe en el formulario - EJS
+export async function editarSuperheroeControllerEJS(req, res) {
+    try {
+        const { id } = req.params;
+        const datos = req.body;
+
+        await actualizarSuperheroe(id, datos);
+
+        res.render("success", {
+            mensaje: "✅ Superhéroe actualizado con éxito"
+        });
+
+    } catch (error) {
+        res.status(400).render("editSuperhero", {
+            errores: [{ msg: error.message }],
+            datos: req.body
+        });
+    }
+}
+
+
+// Función 
+export async function obtenerSuperheroeParaEditarController(req, res) {
+    try {
+        const { id } = req.params;
+
+        const superhero = await obtenerSuperheroePorId(id);
+
+        if (!superhero) {
+            return res.status(404).send("Superhéroe no encontrado");
+        }
+
+        res.render("editSuperhero", {
+            superhero,
+            errores: [],
+            datos: {}
+        });
+
+    } catch (error) {
+        res.status(500).send("Error al cargar formulario de edición");
+    }
+}
 
 // Función para actualizar algún Superhéroe de manera parcial
 export async function actualizarParcialSuperheroeController (req, res) {
@@ -221,23 +261,23 @@ export async function eliminarSuperheroeporIdController (req, res) {
     }
 }
 
+
 // Función para agregar un nuevo Superhéroe - VISTA EJS
-export async function agregarSuperheroeControllerEJS (req, res) {
+export async function agregarSuperheroeControllerEJS(req, res) {
     try {
         const datos = req.body;
 
-        // Aqui se convierten los poderes a array
-        if (typeof datos.poderes === "string") {
-            datos.poderes = datos.poderes.split(",").map(p => p.trim());
-        }
-
         await crearSuperheroe(datos);
 
-        // Aquí se redirige al listado
-        res.redirect("/heroes");
+        res.render("success", {
+            mensaje: "Superhéroe agregado con éxito"
+        });
 
     } catch (error) {
-        res.status(500).send("Error al crear Superhéroe");
+        res.status(400).render("addSuperhero", {
+            errores: [{ msg: error.message }],
+            datos: req.body
+        });
     }
 }
 

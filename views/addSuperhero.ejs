@@ -1,23 +1,70 @@
 <h1>Agregar nuevo Superhéroe</h1>
 
+<!-- ERRORES -->
+<% if (errores?.length > 0) { %>
+    <div style="color:red;">
+        <ul>
+            <% errores.forEach(error => { %>
+                <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>
+
 <form action="/api/heroes/agregar" method="POST">
 
-    <input type="text" name="nombreSuperHeroe" placeholder="Nombre" required>
+    <input 
+        type="text" 
+        name="nombreSuperHeroe" 
+        placeholder="Nombre"
+        value="<%= datos?.nombreSuperHeroe || '' %>"
+    >
+
     <br><br>
 
-    <input type="text" name="nombreReal" placeholder="Nombre real" required>
+    <input 
+        type="text" 
+        name="nombreReal" 
+        placeholder="Nombre real"
+        value="<%= datos?.nombreReal || '' %>"
+    >
+
     <br><br>
 
-    <input type="number" name="edad" placeholder="Edad" required>
+    <input 
+        type="number" 
+        name="edad" 
+        placeholder="Edad"
+        value="<%= datos?.edad || '' %>"
+    >
+
     <br><br>
 
-    <input type="text" name="planetaOrigen" placeholder="Planeta">
+    <input 
+        type="text" 
+        name="planetaOrigen" 
+        placeholder="Planeta"
+        value="<%= datos?.planetaOrigen || '' %>"
+    >
+
     <br><br>
 
-    <input type="text" name="debilidad" placeholder="Debilidad">
+    <input 
+        type="text" 
+        name="debilidad" 
+        placeholder="Debilidad"
+        value="<%= datos?.debilidad || '' %>"
+    >
+
     <br><br>
 
-    <input type="text" name="poderes" placeholder="Poderes (separados por coma)" required>
+    <input 
+        type="text" 
+        name="poderes" 
+        placeholder="Poderes (separados por coma)"
+        value="<%= datos?.poderes || '' %>"
+    >
+
     <br><br>
 
     <button type="submit">Guardar</button>

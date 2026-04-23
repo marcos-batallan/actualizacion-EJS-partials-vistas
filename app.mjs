@@ -4,6 +4,9 @@ import express from 'express';
 // Se importa el modulo path para el manejo de rutas de archivos
 import path from 'path';
 
+// Se importa este middleware para simular métodos HTTP que el navegador no puede enviar desde formularios HTML.
+import methodOverride from 'method-override';
+
 // Se importa este módulo para convertir URL a ruta
 import { fileURLToPath } from 'url';
 
@@ -14,7 +17,10 @@ import { connectDB } from './config/dbConfig.mjs';
 import SuperHeroRoutes from './routes/SuperHeroRoutes.mjs';
 
 // Se importa el controlador para la vista EJS
-import { obtenerSuperheroesDashboardController } from './controllers/superheroesController.mjs';
+import {
+    obtenerSuperheroesDashboardController,
+    obtenerSuperheroeParaEditarController
+} from './controllers/superheroesController.mjs';
 
 // Aquí se crea el servidor listo para configurarse
 const app = express();
@@ -37,11 +43,15 @@ app.use (express.json());
  // Middleware para que Express pueda leer req.body desde formularios
 app.use(express.urlencoded({ extended: true }));
 
+// Middleware para simular métodos HTTP que el navegador no puede enviar desde formularios HTML.
+app.use(methodOverride("_method"))
+
 // Configuración de rutas (todas las rutas bajo el prefijo /api)
 app.use ('/api', SuperHeroRoutes);
 
-//
+// 
 app.get("/heroes", obtenerSuperheroesDashboardController);
+app.get("/heroes/editar/:id", obtenerSuperheroeParaEditarController);
 
 // Configuración de ruta para Check de configuración de EJS
 app.get("/test", (req, res) => {
@@ -50,7 +60,10 @@ app.get("/test", (req, res) => {
 
 // Configuración de ruta para agregar Superhéroe EJS
 app.get("/heroes/agregar", (req, res) => {
-    res.render("addSuperhero");
+    res.render("addSuperhero", {
+        errores: [],
+        datos: {}
+    });
 });
 
 // Manejo de errores para rutas no encontradas

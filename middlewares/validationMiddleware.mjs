@@ -6,8 +6,18 @@ export function validarCampos(req, res, next) {
     const errores = validationResult(req); //Aquí se recuperan los errores de validación del request
 
     if (!errores.isEmpty()) { // Si hay errores entra
-        return res.status(400).json({ // corta la ejecución y devuelve error 400 (Bad Request)
-            errores: errores.array() // Convierte los errores en un array legible
+
+        // Si viene de formulario (EJS)
+        if (req.headers["content-type"]?.includes("application/x-www-form-urlencoded")) {
+            return res.status(400).render(req.view || "addSuperhero", {
+                errores: errores.array(),
+                datos: req.body
+            });
+        }
+
+        // Si es API (Postman)
+        return res.status(400).json({
+            errores: errores.array()
         });
     }
 

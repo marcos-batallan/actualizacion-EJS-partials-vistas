@@ -1,5 +1,16 @@
 import { body, param } from "express-validator";
 
+// Helper para normalizar poderes
+const normalizarArrayStrings = value => {
+    if (typeof value === "string") {
+        return value
+            .split(",")
+            .map(v => v.trim())
+            .filter(v => v.length > 0);
+    }
+    return value;
+};
+
 // Función para validar por Id en el método GET
 export const obtenerSuperheroePorIdValidations = [
 
@@ -7,7 +18,6 @@ export const obtenerSuperheroePorIdValidations = [
         .isMongoId()
         .withMessage("El ID debe ser un ObjectId válido")
 ];
-
 
 // Función para validar por Atributo en el método GET
 const atributosPermitidos = [
@@ -47,10 +57,13 @@ export const crearSuperheroeValidations = [
         .bail()
         .isNumeric().withMessage("Debe ser un número")
         .bail()
-        .isInt({ min: 0 }).withMessage("Debe ser un número entero mayor a 0"),
+        .toInt()
+        .isInt({ min: 0 }).withMessage("Debe ser un número entero mayor o igual a 0"),
 
     body("poderes")
-        .isArray({ min: 1 }).withMessage("Debe ser un array con al menos un poder"),
+    .customSanitizer(normalizarArrayStrings)
+    .isArray({ min: 1 })
+    .withMessage("Debe ser un array con al menos un poder"),
 
     body("poderes.*")
         .trim()
@@ -81,21 +94,22 @@ export const actualizarSuperheroeValidations = [
 
     // edad
     body("edad")
-        .notEmpty().withMessage("La edad es obligatoria")
-        .bail()
-        .isNumeric().withMessage("Debe ser un número")
-        .bail()
-        .custom(value => value >= 0).withMessage("No puede ser negativa"),
+    .notEmpty().withMessage("La edad es obligatoria")
+    .bail()
+    .isNumeric().withMessage("Debe ser un número")
+    .bail()
+    .toInt()
+    .isInt({ min: 0 }).withMessage("Debe ser un número entero mayor o igual a 0"),
 
     // poderes
     body("poderes")
-        .isArray({ min: 1 }).withMessage("Debe ser un array con al menos un poder"),
+    .customSanitizer(normalizarArrayStrings)
+    .isArray({ min: 1 }).withMessage("Debe ser un array con al menos un poder"),
 
     body("poderes.*")
         .trim()
         .isLength({ min: 3, max: 60 }).withMessage("Cada poder debe tener entre 3 y 60 caracteres")
 ];
-
 
 // Función para validar datos en el método PATCH (actualización parcial de datos)
 export const actualizarParcialSuperheroeValidations = [
@@ -123,12 +137,14 @@ export const actualizarParcialSuperheroeValidations = [
         .optional()
         .isNumeric().withMessage("Debe ser un número")
         .bail()
-        .custom(value => value >= 0).withMessage("No puede ser negativa"),
+        .toInt()
+        .isInt({ min: 0 }).withMessage("Debe ser un número entero mayor o igual a 0"),
 
     // poderes
     body("poderes")
-        .optional()
-        .isArray({ min: 1 }).withMessage("Debe ser un array con al menos un poder"),
+    .optional()
+    .customSanitizer(normalizarArrayStrings)
+    .isArray({ min: 1 }).withMessage("Debe ser un array con al menos un poder"),
 
     body("poderes.*")
         .optional()
