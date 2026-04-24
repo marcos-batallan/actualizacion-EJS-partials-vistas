@@ -123,6 +123,26 @@ export async function crearSuperheroeController (req, res) {
 }
 
 
+// Función para agregar un nuevo Superhéroe - VISTA EJS
+export async function agregarSuperheroeControllerEJS(req, res) {
+    try {
+        const datos = req.body;
+
+        await crearSuperheroe(datos);
+
+        res.render("success", {
+            mensaje: "Superhéroe agregado con éxito"
+        });
+
+    } catch (error) {
+        res.status(400).render("addSuperhero", {
+            errores: [{ msg: error.message }],
+            datos: req.body
+        });
+    }
+}
+
+
 // Función para actualización completa de algún Superhéroe de la colección
 export async function actualizarSuperheroeController (req, res) {
     try {
@@ -155,7 +175,7 @@ export async function editarSuperheroeControllerEJS(req, res) {
         await actualizarSuperheroe(id, datos);
 
         res.render("success", {
-            mensaje: "✅ Superhéroe actualizado con éxito"
+            mensaje: "Superhéroe actualizado con éxito"
         });
 
     } catch (error) {
@@ -261,25 +281,31 @@ export async function eliminarSuperheroeporIdController (req, res) {
     }
 }
 
-
-// Función para agregar un nuevo Superhéroe - VISTA EJS
-export async function agregarSuperheroeControllerEJS(req, res) {
+// Función para eliminar Superhéroe - Vista EJS
+export async function eliminarSuperheroeControllerEJS(req, res) {
     try {
-        const datos = req.body;
+        const { id } = req.params;
 
-        await crearSuperheroe(datos);
+        const eliminado = await eliminarSuperheroePorId(id);
+
+        if (!eliminado) {
+            return res.status(404).render("error", {
+                mensaje: "Superhéroe no encontrado"
+            });
+        }
 
         res.render("success", {
-            mensaje: "Superhéroe agregado con éxito"
+            mensaje: "Superhéroe eliminado con éxito"
         });
 
     } catch (error) {
-        res.status(400).render("addSuperhero", {
-            errores: [{ msg: error.message }],
-            datos: req.body
+        res.status(500).render("error", {
+            mensaje: "Error al eliminar Superhéroe"
         });
     }
 }
+
+
 
 /*****
 Este archivo es el intermediario entre el HTTP y la lógica interna.

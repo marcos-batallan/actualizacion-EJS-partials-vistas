@@ -13,7 +13,8 @@ import {
     eliminarSuperheroePorNombreController,
     eliminarSuperheroeporIdController,
     agregarSuperheroeControllerEJS,
-    editarSuperheroeControllerEJS
+    editarSuperheroeControllerEJS,
+    eliminarSuperheroeControllerEJS
 } from '../controllers/superheroesController.mjs';
 
 // Se importa la función de validación (express-validator)
@@ -158,6 +159,14 @@ router.delete(
     eliminarSuperheroePorIdValidations,
     validarCampos,
     eliminarSuperheroeporIdController
+);
+
+// // Eliminar Superhéroe de la colección - Vista EJS
+router.delete(
+    "/heroes/:id/eliminar",
+    eliminarSuperheroePorIdValidations,
+    validarCampos,
+    eliminarSuperheroeControllerEJS
 );
 
 

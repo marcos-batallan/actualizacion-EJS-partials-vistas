@@ -1,73 +1,117 @@
-<h1>Agregar nuevo Superhéroe</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Superhéroe</title>
 
-<!-- ERRORES -->
-<% if (errores?.length > 0) { %>
-    <div style="color:red;">
-        <ul>
-            <% errores.forEach(error => { %>
-                <li><%= error.msg %></li>
-            <% }) %>
-        </ul>
-    </div>
-<% } %>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
 
-<form action="/api/heroes/agregar" method="POST">
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
 
-    <input 
-        type="text" 
-        name="nombreSuperHeroe" 
-        placeholder="Nombre"
-        value="<%= datos?.nombreSuperHeroe || '' %>"
-    >
+        h1 {
+            text-align: center;
+        }
 
-    <br><br>
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
 
-    <input 
-        type="text" 
-        name="nombreReal" 
-        placeholder="Nombre real"
-        value="<%= datos?.nombreReal || '' %>"
-    >
+        .btn {
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
 
-    <br><br>
+        .btn-save {
+            background-color: #28a745;
+            color: white;
+        }
 
-    <input 
-        type="number" 
-        name="edad" 
-        placeholder="Edad"
-        value="<%= datos?.edad || '' %>"
-    >
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+            margin-top: 10px;
+        }
 
-    <br><br>
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
 
-    <input 
-        type="text" 
-        name="planetaOrigen" 
-        placeholder="Planeta"
-        value="<%= datos?.planetaOrigen || '' %>"
-    >
+<body>
 
-    <br><br>
+<div class="container">
 
-    <input 
-        type="text" 
-        name="debilidad" 
-        placeholder="Debilidad"
-        value="<%= datos?.debilidad || '' %>"
-    >
+    <h1>➕ Agregar Superhéroe</h1>
 
-    <br><br>
+    <!-- ERRORES -->
+    <% if (errores && errores.length > 0) { %>
+        <div class="error">
+            <ul>
+                <% errores.forEach(error => { %>
+                    <li><%= error.msg %></li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
 
-    <input 
-        type="text" 
-        name="poderes" 
-        placeholder="Poderes (separados por coma)"
-        value="<%= datos?.poderes || '' %>"
-    >
+    <form action="/api/heroes/agregar" method="POST">
 
-    <br><br>
+        <input type="text" name="nombreSuperHeroe" placeholder="Nombre"
+            value="<%= datos?.nombreSuperHeroe || '' %>" required>
 
-    <button type="submit">Guardar</button>
-</form>
+        <input type="text" name="nombreReal" placeholder="Nombre real"
+            value="<%= datos?.nombreReal || '' %>" required>
 
-<a href="/heroes">⬅ Volver al listado</a>
+        <input type="number" name="edad" placeholder="Edad"
+            value="<%= datos?.edad || '' %>" required>
+
+        <input type="text" name="planetaOrigen" placeholder="Planeta"
+            value="<%= datos?.planetaOrigen || '' %>">
+
+        <input type="text" name="debilidad" placeholder="Debilidad"
+            value="<%= datos?.debilidad || '' %>">
+
+        <input type="text" name="poderes" placeholder="Poderes (separados por coma)"
+            value="<%= datos?.poderes || '' %>" required>
+
+        <input type="text" name="aliados" placeholder="Aliados (opcional)"
+            value="<%= datos?.aliados || '' %>">
+
+        <input type="text" name="enemigos" placeholder="Enemigos (opcional)"
+            value="<%= datos?.enemigos || '' %>">
+
+        <button class="btn btn-save" type="submit">Guardar</button>
+    </form>
+
+    <button class="btn btn-back" onclick="window.location.href='/heroes'">
+        ⬅ Volver
+    </button>
+
+</div>
+
+</body>
+</html>

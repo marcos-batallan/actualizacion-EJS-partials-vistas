@@ -51,7 +51,7 @@ app.use ('/api', SuperHeroRoutes);
 
 // 
 app.get("/heroes", obtenerSuperheroesDashboardController);
-app.get("/heroes/editar/:id", obtenerSuperheroeParaEditarController);
+app.get("/heroes/editar/:id", obtenerSuperheroeParaEditarController);;
 
 // Configuración de ruta para Check de configuración de EJS
 app.get("/test", (req, res) => {

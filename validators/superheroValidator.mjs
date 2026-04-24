@@ -42,16 +42,19 @@ export const buscarSuperheroePorAtributoValidations = [
 // Función para validar los datos en el método POST
 export const crearSuperheroeValidations = [
 
+    // Validar nombreSuperHeroe
     body('nombreSuperHeroe')
         .trim()
         .notEmpty().withMessage("El nombre del Superhéroe es obligatorio")
         .isLength({ min: 3, max: 60 }).withMessage("El nombre debe tener entre 3 y 60 caracteres"),
     
+    // Validar nombreReal
     body("nombreReal")
         .trim()
         .notEmpty().withMessage("El nombre real es obligatorio")
         .isLength({ min: 3, max: 60 }).withMessage("El nombre debe tener entre 3 y 60 caracteres"),
 
+    // Validad edad
     body("edad")
         .notEmpty().withMessage("La edad es obligatoria")
         .bail()
@@ -60,14 +63,37 @@ export const crearSuperheroeValidations = [
         .toInt()
         .isInt({ min: 0 }).withMessage("Debe ser un número entero mayor o igual a 0"),
 
+    // Validar poderes
     body("poderes")
-    .customSanitizer(normalizarArrayStrings)
-    .isArray({ min: 1 })
-    .withMessage("Debe ser un array con al menos un poder"),
+        .customSanitizer(normalizarArrayStrings)
+        .isArray({ min: 1 })
+        .withMessage("Debe ser un array con al menos un poder"),
 
     body("poderes.*")
         .trim()
-        .isLength({ min: 3, max: 60 }).withMessage("Cada poder debe tener entre 3 y 60 caracteres")
+        .isLength({ min: 3, max: 60 }).withMessage("Cada poder debe tener entre 3 y 60 caracteres"),
+    
+    // Validar aliados
+    body("aliados")
+        .optional()
+        .customSanitizer(normalizarArrayStrings)
+        .isArray().withMessage("Aliados debe ser un array"),
+    
+    body("aliados.*")
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 60 }),
+
+    // Validar enemigos
+    body("enemigos")
+        .optional()
+        .customSanitizer(normalizarArrayStrings)
+        .isArray().withMessage("Enemigos debe ser un array"),
+
+    body("enemigos.*")
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 60 })
 ];
 
 
@@ -78,37 +104,59 @@ export const actualizarSuperheroeValidations = [
     param("id")
         .isMongoId().withMessage("ID inválido"),
 
-    // nombreSuperHeroe
+    // Validar nombreSuperHeroe
     body('nombreSuperHeroe')
         .trim()
         .notEmpty().withMessage("El nombre del Superhéroe es obligatorio")
         .bail()
         .isLength({ min: 3, max: 60 }).withMessage("Debe tener entre 3 y 60 caracteres"),
 
-    // nombreReal
+    // Validar nombreReal
     body("nombreReal")
         .trim()
         .notEmpty().withMessage("El nombre real es obligatorio")
         .bail()
         .isLength({ min: 3, max: 60 }),
 
-    // edad
+    // Validar edad
     body("edad")
-    .notEmpty().withMessage("La edad es obligatoria")
-    .bail()
-    .isNumeric().withMessage("Debe ser un número")
-    .bail()
-    .toInt()
-    .isInt({ min: 0 }).withMessage("Debe ser un número entero mayor o igual a 0"),
+        .notEmpty().withMessage("La edad es obligatoria")
+        .bail()
+        .isNumeric().withMessage("Debe ser un número")
+        .bail()
+        .toInt()
+        .isInt({ min: 0 }).withMessage("Debe ser un número entero mayor o igual a 0"),
 
-    // poderes
+    // Validar poderes
     body("poderes")
-    .customSanitizer(normalizarArrayStrings)
-    .isArray({ min: 1 }).withMessage("Debe ser un array con al menos un poder"),
+        .customSanitizer(normalizarArrayStrings)
+        .isArray({ min: 1 }).withMessage("Debe ser un array con al menos un poder"),
 
     body("poderes.*")
         .trim()
-        .isLength({ min: 3, max: 60 }).withMessage("Cada poder debe tener entre 3 y 60 caracteres")
+        .isLength({ min: 3, max: 60 }).withMessage("Cada poder debe tener entre 3 y 60 caracteres"),
+    
+    // Validar aliados
+    body("aliados")
+        .optional()
+        .customSanitizer(normalizarArrayStrings)
+        .isArray().withMessage("Aliados debe ser un array"),
+    
+    body("aliados.*")
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 60 }),
+
+    //Validar enemigos
+    body("enemigos")
+        .optional()
+        .customSanitizer(normalizarArrayStrings)
+        .isArray().withMessage("Enemigos debe ser un array"),
+
+    body("enemigos.*")
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 60 })
 ];
 
 // Función para validar datos en el método PATCH (actualización parcial de datos)
@@ -142,15 +190,37 @@ export const actualizarParcialSuperheroeValidations = [
 
     // poderes
     body("poderes")
-    .optional()
-    .customSanitizer(normalizarArrayStrings)
-    .isArray({ min: 1 }).withMessage("Debe ser un array con al menos un poder"),
+        .optional()
+        .customSanitizer(normalizarArrayStrings)
+        .isArray({ min: 1 }).withMessage("Debe ser un array con al menos un poder"),
 
     body("poderes.*")
         .optional()
         .trim()
         .isLength({ min: 3, max: 60 })
-        .withMessage("Cada poder debe tener entre 3 y 60 caracteres")
+        .withMessage("Cada poder debe tener entre 3 y 60 caracteres"),
+    
+    // Validar aliados
+    body("aliados")
+        .optional()
+        .customSanitizer(normalizarArrayStrings)
+        .isArray().withMessage("Aliados debe ser un array"),
+    
+    body("aliados.*")
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 60 }),
+
+    //Validar enemigos
+    body("enemigos")
+        .optional()
+        .customSanitizer(normalizarArrayStrings)
+        .isArray().withMessage("Enemigos debe ser un array"),
+
+    body("enemigos.*")
+        .optional()
+        .trim()
+        .isLength({ min: 3, max: 60 })
 ];
 
 
