@@ -1,144 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Lista de Superhéroes</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            margin: 0;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: auto;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-add {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .btn-edit {
-            background-color: #8ec5ff;
-            color: white;
-        }
-
-        .btn-delete {
-            background-color: #f57582;
-            color: white;
-        }
-
-        .card {
-            background-color: white;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .card h3 {
-            margin: 0 0 5px 0;
-        }
-
-        .card p {
-            margin: 2px 0;
-        }
-
-        .actions {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .empty {
-            text-align: center;
-            color: gray;
-        }
-    </style>
-</head>
+<%- include('partials/head', { title: "Dashboard Superhéroes" }) %>
 
 <body>
 
 <div class="container">
 
-    <div class="header">
-        <h1>🦹‍♂️ Superhéroes 🌟</h1>
+<%- include('partials/header') %>
 
-        <button class="btn btn-add" onclick="window.location.href='/heroes/agregar'">
-            + Agregar Superhéroe
-        </button>
-    </div>
+<% if (superheroes.length === 0) { %>
+    <p class="empty">No hay superhéroes cargados</p>
+<% } %>
 
-    <% if (superheroes.length === 0) { %>
-        <p class="empty">No hay superhéroes cargados</p>
-    <% } %>
+<% superheroes.forEach(heroe => { %>
+    <div class="card">
+        <h3><%= heroe.nombreSuperHeroe %></h3>
 
-    <% superheroes.forEach(heroe => { %>
-        <div class="card">
-            <h3><%= heroe.nombreSuperHeroe %></h3>
+        <p><strong>Nombre real:</strong> <%= heroe.nombreReal %></p>
+        <p><strong>Edad:</strong> <%= heroe.edad %></p>
+        <p><strong>Planeta:</strong> <%= heroe.planetaOrigen || 'Desconocido' %></p>
+        <p><strong>Debilidad:</strong> <%= heroe.debilidad || 'N/A' %></p>
 
-            <p><strong>Nombre real:</strong> <%= heroe.nombreReal %></p>
-            <p><strong>Edad:</strong> <%= heroe.edad %></p>
-            <p><strong>Planeta:</strong> <%= heroe.planetaOrigen || 'Desconocido' %></p>
-            <p><strong>Debilidad:</strong> <%= heroe.debilidad || 'N/A' %></p>
+        <p><strong>Poderes:</strong> <%= heroe.poderes.join(', ') %></p>
 
-            <p><strong>Poderes:</strong> <%= heroe.poderes.join(', ') %></p>
+        <% if (heroe.aliados && heroe.aliados.length > 0) { %>
+            <p><strong>Aliados:</strong> <%= heroe.aliados.join(', ') %></p>
+        <% } %>
 
-            <% if (heroe.aliados && heroe.aliados.length > 0) { %>
-                <p><strong>Aliados:</strong> <%= heroe.aliados.join(', ') %></p>
-            <% } %>
+        <% if (heroe.enemigos && heroe.enemigos.length > 0) { %>
+            <p><strong>Enemigos:</strong> <%= heroe.enemigos.join(', ') %></p>
+        <% } %>
 
-            <% if (heroe.enemigos && heroe.enemigos.length > 0) { %>
-                <p><strong>Enemigos:</strong> <%= heroe.enemigos.join(', ') %></p>
-            <% } %>
+        <div class="actions">
 
-            <div class="actions">
+            <!-- EDITAR -->
+            <button 
+                class="btn btn-edit"
+                onclick="window.location.href='/heroes/editar/<%= heroe._id %>'"
+            >
+                Editar
+            </button>
 
-                <!-- EDITAR -->
-                <button 
-                    class="btn btn-edit"
-                    onclick="window.location.href='/heroes/editar/<%= heroe._id %>'"
-                >
-                    Editar
+            <!-- ELIMINAR -->
+            <form 
+                action="/api/heroes/<%= heroe._id %>/eliminar?_method=DELETE" 
+                method="POST"
+                onsubmit="return confirm('¿Seguro que querés eliminar este superhéroe?')"
+            >
+               <button class="btn btn-delete" type="submit">
+                    Eliminar
                 </button>
+            </form>
 
-                <!-- ELIMINAR -->
-                <form 
-                    action="/api/heroes/<%= heroe._id %>/eliminar?_method=DELETE" 
-                    method="POST"
-                    onsubmit="return confirm('¿Seguro que querés eliminar este superhéroe?')"
-                >
-                    <button class="btn btn-delete" type="submit">
-                        Eliminar
-                    </button>
-                </form>
-
-            </div>
         </div>
-    <% }) %>
+    </div>
+<% }) %>
+
+<%- include('partials/footer') %>
 
 </div>
 

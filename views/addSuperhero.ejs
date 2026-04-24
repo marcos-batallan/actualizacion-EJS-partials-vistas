@@ -1,115 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Agregar Superhéroe</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 8px;
-            margin-bottom: 15px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        .btn {
-            padding: 10px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-        }
-
-        .btn-save {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .btn-back {
-            background-color: #6c757d;
-            color: white;
-            margin-top: 10px;
-        }
-
-        .error {
-            color: red;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
+<%- include('partials/head', { title: "Agregar Superhéroe" }) %>
 
 <body>
 
 <div class="container">
 
-    <h1>➕ Agregar Superhéroe</h1>
+<%- include('partials/header') %>
 
-    <!-- ERRORES -->
-    <% if (errores && errores.length > 0) { %>
-        <div class="error">
-            <ul>
-                <% errores.forEach(error => { %>
-                    <li><%= error.msg %></li>
-                <% }) %>
-            </ul>
-        </div>
-    <% } %>
+<!-- ERRORES -->
+<% if (errores && errores.length > 0) { %>
+    <div class="error">
+        <ul>
+            <% errores.forEach(error => { %>
+                <li><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>
 
-    <form action="/api/heroes/agregar" method="POST">
+<form action="/api/heroes/agregar" method="POST">
 
-        <input type="text" name="nombreSuperHeroe" placeholder="Nombre"
-            value="<%= datos?.nombreSuperHeroe || '' %>" required>
+    <input type="text" name="nombreSuperHeroe" placeholder="Nombre"
+        value="<%= datos?.nombreSuperHeroe || '' %>" required>
 
-        <input type="text" name="nombreReal" placeholder="Nombre real"
-            value="<%= datos?.nombreReal || '' %>" required>
+    <input type="text" name="nombreReal" placeholder="Nombre real"
+        value="<%= datos?.nombreReal || '' %>" required>
 
-        <input type="number" name="edad" placeholder="Edad"
-            value="<%= datos?.edad || '' %>" required>
+    <input type="number" name="edad" placeholder="Edad"
+        value="<%= datos?.edad || '' %>" required>
 
-        <input type="text" name="planetaOrigen" placeholder="Planeta"
-            value="<%= datos?.planetaOrigen || '' %>">
+    <input type="text" name="planetaOrigen" placeholder="Planeta"
+        value="<%= datos?.planetaOrigen || '' %>">
 
-        <input type="text" name="debilidad" placeholder="Debilidad"
-            value="<%= datos?.debilidad || '' %>">
+    <input type="text" name="debilidad" placeholder="Debilidad"
+        value="<%= datos?.debilidad || '' %>">
 
-        <input type="text" name="poderes" placeholder="Poderes (separados por coma)"
-            value="<%= datos?.poderes || '' %>" required>
+    <input type="text" name="poderes" placeholder="Poderes (separados por coma)"
+        value="<%= datos?.poderes || '' %>" required>
 
-        <input type="text" name="aliados" placeholder="Aliados (opcional)"
-            value="<%= datos?.aliados || '' %>">
+    <input type="text" name="aliados" placeholder="Aliados (opcional)"
+        value="<%= datos?.aliados || '' %>">
 
-        <input type="text" name="enemigos" placeholder="Enemigos (opcional)"
-            value="<%= datos?.enemigos || '' %>">
+    <input type="text" name="enemigos" placeholder="Enemigos (opcional)"
+        value="<%= datos?.enemigos || '' %>">
 
-        <button class="btn btn-save" type="submit">Guardar</button>
-    </form>
+    <button class="btn btn-save" type="submit">Guardar</button>
+</form>
 
-    <button class="btn btn-back" onclick="window.location.href='/heroes'">
-        ⬅ Volver
-    </button>
+<button class="btn btn-back" onclick="window.location.href='/heroes'">
+    ⬅ Volver
+</button>
+
+<%- include('partials/footer') %>
 
 </div>
 
